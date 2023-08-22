@@ -4,7 +4,6 @@ import os
 
 from aiogram import Bot, Dispatcher, types
 
-from weather_module.weather_handlers import register_weather_handlers
 
 BOT_TOKEN = os.environ.get('BOT_TOKEN')
 
@@ -15,19 +14,12 @@ logging.basicConfig(format='[%(levelname)s] %(asctime)s - %(message)s', handlers
 date_format = "%d.%m.%Y %H:%M"
 
 
-async def register_handlers(dp: Dispatcher):
-    """Registration all handlers before processing update."""
-    register_weather_handlers(dp)
-
-
 async def main():
     """Bot initialization main function."""
     bot = Bot(token=BOT_TOKEN,
               parse_mode=types.ParseMode.HTML)  # создание бота и его токен
 
     dp = Dispatcher(bot)
-
-    await register_handlers(dp)
     await dp.start_polling(bot)
 
 
