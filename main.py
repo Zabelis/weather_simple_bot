@@ -1,27 +1,18 @@
-import asyncio
 import logging
-import os
 
-from aiogram import Bot, Dispatcher, types
+from aiogram import Dispatcher
 
-
-BOT_TOKEN = os.environ.get('BOT_TOKEN')
-
-logger = logging.getLogger(__name__)
-fileHandler = logging.FileHandler(filename='logging_info.log', encoding='utf-8')
-logging.basicConfig(format='[%(levelname)s] %(asctime)s - %(message)s', handlers=[fileHandler],
-                    level=logging.INFO)
-date_format = "%d.%m.%Y %H:%M"
+from database.SQLite_ORM import create_models
+from handlers import dp
+from utils.set_bot_commands import set_default_commands
+from aiogram import executor
 
 
-async def main():
-    """Bot initialization main function."""
-    bot = Bot(token=BOT_TOKEN,
-              parse_mode=types.ParseMode.HTML)  # создание бота и его токен
-
-    dp = Dispatcher(bot)
-    await dp.start_polling(bot)
+async def on_startup(dp: Dispatcher):
+    await set_default_commands(dp)
+    print("Бот запущен!")
 
 
-if __name__ == "__main__":
-    asyncio.run(main())
+if __name__ == '__main__':
+    create_models()
+    executor.start_polling(dp, on_startup=on_startup, skip_updates=True)
