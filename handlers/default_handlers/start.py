@@ -10,7 +10,13 @@ from states.geo_state import GeoState
 
 
 @dp.message_handler(commands=["start"])
-async def handle_start(message: Message, state: FSMContext) -> None:
+async def handler_start(message: Message, state: FSMContext) -> None:
+    """
+    Сообщение на команду start
+    :param message:
+    :param state:
+    :return: None
+    """
     user_id = message.from_user.id
 
     if User.get_or_none(User.user_id == user_id):
@@ -26,6 +32,12 @@ async def handle_start(message: Message, state: FSMContext) -> None:
 
 @dp.message_handler(state=GeoState.current_location, content_types=['location'])
 async def save_geo(message: Message, state: FSMContext) -> None:
+    """
+    Сохранение геопозиции
+    :param message:
+    :param state:
+    :return:
+    """
     user_id = message.from_user.id
     username = message.from_user.username
     first_name = message.from_user.first_name
@@ -33,7 +45,8 @@ async def save_geo(message: Message, state: FSMContext) -> None:
     lat = message.location.latitude
     lon = message.location.longitude
     try:
-        User.create(user_id=user_id, username=username, first_name=first_name, last_name=last_name, lat=lat, lon=lon)
+        User.create(user_id=user_id, username=username, first_name=first_name, last_name=last_name, lat=lat, lon=lon,
+                    history='> Создание аккаунта\n')
         await state.finish()
         await message.answer('Ваша геопозиция сохранена!\n'
                              'Для ознакомления с возможностями бота используйте команду /help',
