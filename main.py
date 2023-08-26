@@ -8,7 +8,12 @@ from utils.set_bot_commands import set_default_commands
 from aiogram import executor
 
 
-async def on_startup(dp: Dispatcher):
+async def on_startup(dp: Dispatcher) -> None:
+    """
+    Функция запускаемая при запуске бота
+    :param dp:
+    :return: None
+    """
     await set_default_commands(dp)
     print("Бот запущен!")
 
