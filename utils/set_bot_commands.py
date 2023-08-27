@@ -19,5 +19,6 @@ async def set_default_commands(dp: Dispatcher) -> None:
             types.BotCommand('help', 'Помощь'),
             types.BotCommand('change_location', 'Изменить местоположение'),
             types.BotCommand('my_location', 'Мой местоположение'),
+            types.BotCommand('delete_user', 'Удалить аккаунт'),
         ]
     )
