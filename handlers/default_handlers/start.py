@@ -5,7 +5,7 @@ from peewee import IntegrityError
 
 from database.SQLite_ORM import User
 from keyboards.reply.geo_keyboard import get_geo_keyboard
-from loader import dp
+from loader import dp, log
 from states.geo_state import GeoState
 
 
@@ -36,7 +36,7 @@ async def save_geo(message: Message, state: FSMContext) -> None:
     Сохранение геопозиции
     :param message:
     :param state:
-    :return:
+    :return: None
     """
     user_id = message.from_user.id
     username = message.from_user.username
@@ -52,6 +52,6 @@ async def save_geo(message: Message, state: FSMContext) -> None:
                              'Для ознакомления с возможностями бота используйте команду /help',
                              reply_markup=types.ReplyKeyboardRemove())
     except Exception as e:
-        print('Возникла ошибка:', e)
+        log.error('Возникла ошибка:', e)
         await message.answer('Внимание! При сохранении вашего аккаунта возникла ошибка! '
                              'Попробуйте отправить геопозицию еще раз!')

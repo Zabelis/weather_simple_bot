@@ -4,6 +4,7 @@ from aiogram import Dispatcher
 
 from database.SQLite_ORM import create_models
 from handlers import dp
+from loader import log
 from utils.set_bot_commands import set_default_commands
 from aiogram import executor
 
@@ -15,7 +16,7 @@ async def on_startup(dp: Dispatcher) -> None:
     :return: None
     """
     await set_default_commands(dp)
-    print("Бот запущен!")
+    log.info("Бот запущен!")
 
 
 if __name__ == '__main__':

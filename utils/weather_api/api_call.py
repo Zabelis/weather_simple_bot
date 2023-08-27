@@ -8,7 +8,7 @@ class CurrentWeather:
     """
     Класс для получения прогноза погоды
     """
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Инициализация ссылок для получения текущей погоды и погоды на будущие дни
         """
@@ -37,7 +37,7 @@ class CurrentWeather:
         :param lat: Долгота
         :param lon: Широта
         :param days: Количество дней
-        :return:
+        :return: Данные погоды
         """
         response = requests.get(self.forecast_url.format(config.WEATHER_API_KEY, lat, lon, days))
         if response.status_code == 200:
