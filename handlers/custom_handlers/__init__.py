@@ -6,5 +6,6 @@ from .high import dp
 from .low import dp
 from .history import dp
 from .custom import dp
+from .unknown_handler import dp
 
 __all__ = ['dp']
