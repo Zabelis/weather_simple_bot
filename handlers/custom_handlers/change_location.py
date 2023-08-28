@@ -4,7 +4,7 @@ from aiogram.types import Message
 
 from database.SQLite_ORM import User
 from keyboards.reply.geo_keyboard import get_geo_keyboard
-from loader import dp
+from loader import dp, log
 from states.change_geo_state import ChangeGeoState
 
 
@@ -18,14 +18,18 @@ async def handler_change_location(message: Message, state: FSMContext) -> None:
     """
     user_id = message.from_user.id
 
-    if User.get_or_none(User.user_id == user_id) is None:
-        await message.answer('Вы не зарегистрированы в боте!')
-        return
+    try:
+        if User.get_or_none(User.user_id == user_id) is None:
+            await message.answer('Вы не зарегистрированы в боте!')
+            return
 
-    await state.set_state(ChangeGeoState.change_location)
-    geo_button = get_geo_keyboard('Изменить местоположение')
-    await message.answer("Поделитесь вашей геопозицией, чтобы изменить местоположение",
-                         reply_markup=geo_button)
+        await state.set_state(ChangeGeoState.change_location)
+        geo_button = get_geo_keyboard('Изменить местоположение')
+        await message.answer("Поделитесь вашей геопозицией, чтобы изменить местоположение",
+                             reply_markup=geo_button)
+    except Exception as e:
+        log.error('Возникла ошибка:', e)
+        await message.answer('Внимание! Произошла ошибка! Нужно связаться с разработчиком')
 
 
 @dp.message_handler(state=ChangeGeoState.change_location, content_types=['location'])
@@ -34,7 +38,7 @@ async def save_geo(message: Message, state: FSMContext) -> None:
     Сохранение новой геопозиции
     :param message:
     :param state:
-    :return:
+    :return: None
     """
 
     try:
